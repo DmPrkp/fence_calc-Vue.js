@@ -1,42 +1,15 @@
-const Home = Vue.component('home', {
-	template: `<p>HOME</p>`
-})
+//import { stepCard1 } from './steps';
 
-const Compute = Vue.component('compute', {
-	template: `<fenceType></fenceType>`
-})
-
-const How = Vue.component('how', {
-	template: `<p>HOW</p>`
-})
-
-const basement = Vue.component('basement', {
-
-})
-
-const routes = [
-	{
-		path: '/',
-		component: Home,
-		name: 'home',
-	}, {
-		path: '/compute',
-		component: Compute,
-		name: 'compute',
-	}, {
-		path: '/how',
-		component: How,
-		name: 'how',
-	}
-]
-
-const router = new VueRouter({
-	mode: 'history',
-	routes,
-})
-
+// STORE //////////////////////////////////////////////////// STORE ///////////////
 const bootstrapData = new Vuex.Store({
 	state: {
+		currentType: {
+			baseDepth: 1,
+			baseType: 1.3,
+			pillarType: 1.2,
+			coverType: 1.3,
+			fenceHeight: 1.8,
+		},
 		basementObj: [
 			{
 				id: 1.1,
@@ -57,7 +30,8 @@ const bootstrapData = new Vuex.Store({
 			{
 				id: 1.3,
 				img: "img/basement/Pillar.png",
-				name: `Без фундамента`,
+				name: `Колонны в грунте
+				(по типу свай)`,
 				plus: ["Стоимость"],
 				minus: ["Недолговечность(10-20 лет)"],
 				type: "basement",
@@ -140,9 +114,33 @@ const bootstrapData = new Vuex.Store({
 				type: "cover",
 			},
 		],
+	},
+	mutations: {
+		inputHeight:(state, val) => state.currentType.fenceHeight = val.height,
+		inputDepth:(state, val) => state.currentType.baseDepth = val.depth,
 	}
 })
 
+//COMPONENTS//////COMPONENTS//////////COMPONENTS///////////COMPONENTS///////////////
+// MAIN ////////////////////////////////////////////////////COMPONENT///////////////
+
+const Home = Vue.component('home', {
+	template: `<p>HOME</p>`
+})
+
+const Compute = Vue.component('compute', {
+	template: `<fenceType></fenceType>`
+})
+
+const How = Vue.component('how', {
+	template: `<p>HOW</p>`
+})
+
+const basement = Vue.component('basement', {
+
+})
+
+// TYPE ////////////////////////////////////////////////////COMPONENT///////////////
 const fenceType = Vue.component('fenceType', {
 	data() {
 		return {
@@ -157,7 +155,7 @@ const fenceType = Vue.component('fenceType', {
 				"высота",
 			]
 		}
-	},	
+	},
 	methods: {
 		nextStep(n) {
 			if (n === this.steps) {
@@ -169,12 +167,13 @@ const fenceType = Vue.component('fenceType', {
 	},
 	template: `
 		<div>
+			<h3 class="text-center mb-10"> Определяем конструкцию ограждения </h3>
 			<v-stepper v-model="e1">
 				<v-stepper-header>
 					<template v-for="n in steps">
 						<v-stepper-step :key="n" :complete="e1 > n" :step="n" editable>
 						{{ stepType[n-1] }}
-						</v-stepper-step>
+						</v-stepper-step>						
 
 						<v-divider v-if="n !== steps" :key="n+10"></v-divider>
 					</template>
@@ -183,45 +182,47 @@ const fenceType = Vue.component('fenceType', {
 
 				<v-stepper-items>
 					<v-stepper-content :step="1" >
-						<stepCard1/>
-			
-						<v-icon x-large color="primary" @click="nextStep(1)">mdi-arrow-right-circle</v-icon>
-					</v-stepper-content>
-						
+						<stepCard1/>			
+						<div class="d-flex justify-end">
+							<v-icon  x-large color="primary" @click="nextStep(1)">mdi-arrow-right-circle</v-icon>
+						</div>
+					</v-stepper-content>						
 
 					<v-stepper-content :step="2">
 						<stepCard2/>
-
-						<v-btn color="primary" @click="nextStep(2)">Далее</v-btn>
-
+						<div class="d-flex justify-end">
+							<v-icon  x-large color="primary" @click="nextStep(2)">mdi-arrow-right-circle</v-icon>
+						</div>
 					</v-stepper-content>
 
 					<v-stepper-content :step="3">
-						<v-card  color="grey lighten-1" height="400px"></v-card>
-
-						<v-btn color="primary" @click="nextStep(3)">Далее</v-btn>
-
+						<stepCard3/>
+						<div class="d-flex justify-end">
+							<v-icon  x-large color="primary" @click="nextStep(3)">mdi-arrow-right-circle</v-icon>
+						</div>
 					</v-stepper-content>
 
 					<v-stepper-content :step="4">
-						<v-card  color="grey lighten-1" height="400px"></v-card>
-
-						<v-btn color="primary" @click="nextStep(4)">Далее</v-btn>
-
+						<stepCard4/>
+						<div class="d-flex justify-end">
+							<v-icon  x-large color="primary" @click="nextStep(4)">mdi-arrow-right-circle</v-icon>
+						</div>
 					</v-stepper-content>
 
 					<v-stepper-content :step="5">
 						<stepCard5/>
+						<div class="d-flex justify-end">
+							<v-btn color="success" @click="nextStep(1)">К определению длинны ограждения ></v-btn>
+						</div>
+						</v-stepper-content>
 
-						<v-btn color="primary" @click="nextStep(5)">Далее</v-btn>
-
-					</v-stepper-content>					
 				</v-stepper-items>
 			</v-stepper>
 		</div>
 	`
 })
 
+// CARD 1 ////////////////////////////////////////////////////CARD 1///////////////
 const stepCard1 = Vue.component('stepCard1', {
 	data() {
 		return {
@@ -233,11 +234,11 @@ const stepCard1 = Vue.component('stepCard1', {
 			},
 			colorDepth: ['red', 'yellow', 'green', 'blue'],
 			map: "img/depth.png",
-			radios: '',
+			chosenDepth: '1',
 		}
 	},
 	template: `
-		<v-card color="lighten-1" class="d-flex flex-column align-center mb-12">
+		<v-card color="lighten-1" class="d-flex flex-column align-center mb-12" height="450">
 			<h3 class="mb-2">Определяем глубину промерзания и залегания фундамента</h3>
 
 			<v-row>
@@ -248,7 +249,7 @@ const stepCard1 = Vue.component('stepCard1', {
 				<v-col cols="12" sm="6">
 					<div class="d-flex justify-center" v-for="(val, key) in depth" :key="key">
 						<div 	:style="{ backgroundColor: colorDepth[key-1] }"
-									style="width: 20px; height: 20px; border-radius: 50%; margin-right: 10px;">
+								style="width: 20px; height: 20px; border-radius: 50%; margin-right: 10px;">
 						</div>
 						<p>-Тип {{key}}. Глубина промерзания до {{val}} м</p>
 					</div>
@@ -257,105 +258,255 @@ const stepCard1 = Vue.component('stepCard1', {
 			</v-row>
 			
 			<div>
-				<h4>Укажите глубину промерзания:</h4>				
-				<v-radio-group v-model="radios" :mandatory="false" row >					
-      		<v-radio label="Тип 1" :value="depth[1]"></v-radio>
-					<v-radio label="Тип 2" :value="depth[2]"></v-radio>
-					<v-radio label="Тип 3" :value="depth[3]"></v-radio>
-					<v-radio label="Тип 4" :value="depth[4]"></v-radio>
+				<h4 class="text-center">Укажите глубину промерзания:</h4>
+								
+				<v-radio-group v-model="chosenDepth" :mandatory="false" row >					
+      				<v-radio label="Тип 1" :checked="setDepth(chosenDepth)"  :value="depth[1]"></v-radio>
+					<v-radio label="Тип 2" :checked="setDepth(chosenDepth)"  :value="depth[2]"></v-radio>
+					<v-radio label="Тип 3" :checked="setDepth(chosenDepth)"  :value="depth[3]"></v-radio>
+					<v-radio label="Тип 4" :checked="setDepth(chosenDepth)"  :value="depth[4]"></v-radio>
 				</v-radio-group>
-				<p><strong>Глубина фундамента: {{ radios || '' }} м </strong></p>
+				<p>
+					<strong>
+						Глубина залегания фундамента: {{ baseDepth }} м 
+					</strong>
+					<v-icon>mdi-help-rhombus-outline</v-icon>
+				</p>				
 			</div>		
 		</v-card>
-	  `
-})
-
-
-
-const stepCard5 = Vue.component('stepCard5', {
-	data() {
-		return {
-			depth: {
-				1: 0.5,
-				2: 1,
-				3: 1.5,
-				4: 2
-			},
-			colorDepth: ['red', 'yellow', 'green', 'blue'],
-			raptor: "img/raptor.png",
-			human: "img/human.png",
-			radios: '',
+	  `,
+	computed: {
+		baseDepth: function() {
+			return bootstrapData.state.currentType.baseDepth
 		}
 	},
-	template: `
-		<v-card color="lighten-1" class="d-flex flex-column align-center mb-12">
-			<h3 class="mb-2">Определяем высоту</h3>
-
-			<div class="d-flex flex-row align-end">
-				
-				
-					<v-img :src="raptor" contain  max-width="600px" class="m-0"></v-img>
-				
-					<div style="height: 100px; width: 5px; background-color: black;" class="mx-10"></div>
-				
-					<v-img :src="human" contain  max-width="150px"></v-img>
-				
-
-			</div>
-			
-			<div>
-				<h4>Укажите высоту:</h4>		
-					
-				<p><strong>Высота фундамента: {{ radios || '' }} м </strong></p>
-			</div>		
-		</v-card>
-	  `
+	methods: {
+		setDepth () {
+			bootstrapData.commit({
+				type:'inputDepth',depth: this.chosenDepth})
+		}
+	}
 })
 
+// CARD 2 //////////////////////////////////////////////////// CARD 2 ///////////////
 const stepCard2 = Vue.component('stepCard2', {
 	data() {
 		return {
-			depth: [1, 1.5, 2],
-			map: "img/depth.png",
+
 		}
 	},
 	template: `
-		<v-card class="mb-12" color="grey lighten-1" >
+		<v-card class="mb-12" color="lighten-1" height="450">
 			<v-item-group mandatory>
 				<v-container>
 					<v-row>
 						<v-col
-							v-for="n in 3"
-							:key="n"
-							cols="12"
-							md="4"
+							v-for="n in basementObj"
+							:key="n.id"
+							cols="4"
+							md="3"
+							lg="2"
 						>
+						<h4 style="height: 50px;" class="text-center">{{n.name}}</h4>
+							<v-item v-slot:default="{ active, toggle }" :value="n.id">
+									<v-img 	class="text-right pa-2"											
+											:src="n.img"											
+											@click="toggle"
+											height="150"																						
+											contain
+											style="cursor: pointer;"
+											>
+											<v-btn x-small fab color="success">
+												<v-icon >
+													{{ active ? 'mdi-check-bold' : '' }}
+												</v-icon>
+											</v-btn>									
+									</v-img>						
+																
+							</v-item>							
+						</v-col>						
+					</v-row>
+				</v-container>
+			</v-item-group>
+		</v-card>
+	`,
+	computed: {
+		basementObj: function () {
+			return bootstrapData.state.basementObj;
+		}
+	}
+})
+
+// CARD 3 ////////////////////////////////////////////////////CARD 3///////////////
+const stepCard3 = Vue.component('stepCard3', {
+	data() {
+		return {
+
+		}
+	},
+	template: `
+		<v-card class="mb-12" color="lighten-1" height="450">
+			<v-item-group mandatory>
+				<v-container>
+					<v-row>
+						<v-col
+							v-for="n in pillarsObj"
+							:key="n.id"
+							cols="4"
+							md="3"
+							lg="2"
+						>
+						<h4 style="height: 45px;" class="text-center">{{n.name}}</h4>
 							<v-item v-slot:default="{ active, toggle }">
-								<v-card
-									:color="active ? 'primary' : ''"
-									class="d-flex align-center"
-									dark
-									height="200"
-									@click="toggle"
-								>
-									<v-scroll-y-transition>
-										<div
-											v-if="active"
-											class="display-3 flex-grow-1 text-center"
-										>
-											Active
-										</div>
-									</v-scroll-y-transition>
-								</v-card>
-							</v-item>
+									<v-img 	class="text-right pa-2"											
+											:src="n.img"
+											@click="toggle"
+											height="150"																						
+											contain
+											style="cursor: pointer;"
+											>
+											<v-btn x-small fab color="success">
+												<v-icon >
+													{{ active ? 'mdi-check-bold' : '' }}
+												</v-icon>
+											</v-btn>									
+									</v-img>						
+																
+							</v-item>							
 						</v-col>
 					</v-row>
 				</v-container>
 			</v-item-group>
 		</v-card>
-	  `
+	`,
+	computed: {
+		pillarsObj: function () {
+			return bootstrapData.state.pillarsObj;
+		}
+	}
 })
 
+// CARD 4 ////////////////////////////////////////////////////CARD 4///////////////
+const stepCard4 = Vue.component('stepCard4', {
+	data() {
+		return {
+
+		}
+	},
+	template: `
+		<v-card class="mb-12" color="lighten-1" min-height="450">
+			<v-item-group mandatory>
+				<v-container>
+					<v-row>
+						<v-col
+							v-for="n in coverObj"
+							:key="n.id"
+							cols="4"
+							md="3"
+							lg="2"							
+						>
+						<h4 style="height: 45px;" class="text-center">{{n.name}}</h4>
+							<v-item v-slot:default="{ active, toggle }">
+									<v-img 	class="text-right pa-2"											
+											:src="n.img"
+											@click="toggle"
+											height="150"																					
+											contain
+											style="cursor: pointer;"
+											>
+											<v-btn x-small fab color="success">
+												<v-icon outlined>
+													{{ active ? 'mdi-check-bold' : '' }}
+												</v-icon>
+											</v-btn>									
+									</v-img>															
+							</v-item>							
+						</v-col>
+					</v-row>
+				</v-container>
+			</v-item-group>
+		</v-card>
+	`,
+	computed: {
+		coverObj: function () {
+			return bootstrapData.state.coverObj;
+		}
+	}
+})
+// CARD 5 ////////////////////////////////////////////////////CARD 5///////////////
+const stepCard5 = Vue.component('stepCard5', {
+	data() {
+		return {
+			height: 1.8,
+			raptor: "img/raptor.png",
+			human: "img/human.png",
+			rules: [
+				value => !!value || 'необходимо заполнить!',
+				value => !isNaN(value) || 'введите значение в метрах! (Примеры: 2.3; 2; 1.79)',
+				value => !(value > 3) || 'для такого высокого забора лучше сделать проект!',
+			],
+		}
+	},
+	template: `
+		<v-card color="lighten-1" class="d-flex flex-column align-center mb-12" min-height="450">
+			<h4 class="mb-15" >Определяем высоту</h4>
+
+			<div class="d-flex flex-row align-end mb-10">				
+				<v-img :src="raptor" contain  max-width="600px" class="m-0"></v-img>
+				
+				<div :style="{height: height*50}"
+				style="width: 10px; background-color: black;" class="mx-10"></div>
+				
+				<v-img :src="human" contain  max-width="150px"></v-img>
+			</div>
+			
+			<div>
+				<h4>Укажите высоту: </h4>	
+				<v-text-field :placeholder="height+'м'" v-model="height" @input="uploadHeight(height)" :rules="rules"></v-text-field>
+				<strong>
+					Высота ограждения равна: {{ fenceHeight }} м 
+				</strong>				
+			</div>		
+		</v-card>
+	`,
+	//computed: {...Vuex.mapState(['currentType'])}
+	computed: {
+		fenceHeight: function () {
+			return bootstrapData.state.currentType.fenceHeight;
+		}
+	},
+	methods: {
+		uploadHeight () {
+			bootstrapData.commit({
+				type: 'inputHeight', height: this.height,
+			})
+		}
+	}
+})
+
+// ROUTES //////////////////////////////////////////////////// ROUTES //////
+const routes = [
+	{
+		path: '/',
+		component: Home,
+		name: 'home',
+	}, {
+		path: '/compute',
+		component: Compute,
+		name: 'compute',
+	}, {
+		path: '/how',
+		component: How,
+		name: 'how',
+	}
+]
+
+const router = new VueRouter({
+	mode: 'history',
+	routes,
+})
+
+// APP //////////////////////////////////////////////////// APP ///////////////
 new Vue({
 	el: '#app',
 	router,
@@ -365,12 +516,4 @@ new Vue({
 			dark: false,
 		}
 	}),
-	components: {
-		'how': How,
-		'compute': Compute,
-		'home': Home,
-	},
 });
-
-
-
