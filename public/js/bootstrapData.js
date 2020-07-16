@@ -4,11 +4,14 @@ const bootstrapData = new Vuex.Store({
 		currentType: {
 			baseDepth: 1,
 			baseType: 1.3,
+			baseTypeString: "",
 			pillarType: 1.2,
+			pillarTypeString: "",
 			coverType: 1.3,
-            fenceHeight: 1.8,
-            overallLength: 1,
-            pillarsNum: 1,
+			coverTypeString: "",
+			fenceHeight: 1.8,
+			overallLength: 1,
+			pillarsNum: 1,
 		},
 		basementObj: [
 			{
@@ -116,7 +119,44 @@ const bootstrapData = new Vuex.Store({
 		],
 	},
 	mutations: {
-		inputHeight:(state, val) => state.currentType.fenceHeight = val.height,
-		inputDepth:(state, val) => state.currentType.baseDepth = val.depth,
+		setDepth: (state, val) => state.currentType.baseDepth = val.depth,
+
+		setBaseType: (state, val) => {
+			state.currentType.baseType = val.depthType
+			for (let i = 0; i < state.basementObj.length; i++) {
+				if (state.basementObj[i].id === state.currentType.baseType) {
+					state.currentType.baseTypeString = state.basementObj[i].name
+				};
+			}
+		},
+		setPillarType: (state, val) => {
+			state.currentType.pillarType = val.pillarType
+			for (let i = 0; i < state.pillarsObj.length; i++) {
+				if (state.pillarsObj[i].id === state.currentType.pillarType) {
+					state.currentType.pillarTypeString = state.pillarsObj[i].name
+				};
+			}
+		},
+		setCoverType: (state, val) => {
+			state.currentType.coverType = val.coverType
+			for (let i = 0; i < state.coverObj.length; i++) {
+				if (state.coverObj[i].id === state.currentType.coverType) {
+					state.currentType.coverTypeString = state.coverObj[i].name
+				};
+			}
+		},
+		setHeight: (state, val) => {
+			if (!isNaN(val.height)) {
+				(val.height < 101) ?
+					state.currentType.fenceHeight = val.height :
+					state.currentType.fenceHeight = 3.5
+			}
+		},
+		setOverallLength: (state, val) => {
+			state.currentType.overallLength = val
+		},
+		setPillarsNum: (state, val) => {
+			state.currentType.pillarsNum = val
+		}
 	}
 })

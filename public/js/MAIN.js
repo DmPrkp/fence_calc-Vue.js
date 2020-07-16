@@ -1,5 +1,6 @@
 import { fenceType } from './fenceType.js'
 import { yourFence } from './yourFence.js'
+import { uploadImg } from './gallery.js'
 
 //COMPONENTS//////COMPONENTS//////////COMPONENTS///////////COMPONENTS///////////////
 // MAIN ////////////////////////////////////////////////////COMPONENT///////////////
@@ -12,7 +13,7 @@ const Compute = Vue.component('compute', {
 	template: `
 	<div>
 		<div>
-			<h3 class="text-center mb-10"> Определяем конструкцию ограждения </h3>
+			<h3 class="text-center mb-10"> Определяем конструкцию ограждения и его длинну </h3>
 			<v-row>
 				<v-col
 					col="12"
@@ -38,8 +39,10 @@ const How = Vue.component('how', {
 	template: `<p>HOW</p>`
 })
 
-const basement = Vue.component('basement', {
-
+const Gallery = Vue.component('gallery', {
+	template: `
+	<uploadImg/>
+	`
 })
 
 // ROUTES //////////////////////////////////////////////////// ROUTES //////
@@ -56,6 +59,10 @@ const routes = [
 		path: '/how',
 		component: How,
 		name: 'how',
+	}, {
+		path: '/gallery',
+		component: Gallery,
+		name: 'gallery',
 	}
 ]
 
@@ -68,7 +75,7 @@ const router = new VueRouter({
 new Vue({
 	el: '#app',
 	router,
-	bootstrapData,
+	store: bootstrapData,
 	vuetify: new Vuetify({
 		theme: {
 			dark: false,
@@ -80,41 +87,44 @@ new Vue({
 	template: `
 	<v-app id="inspire">
       <v-app-bar color="#fcb69f" fixed dark shrink-on-scroll src="./img/fence-road.jpg"
-        scroll-target="#scrolling-techniques-2" class="overflow-hidden" app>
+		scroll-target="#scrolling-techniques-2" class="overflow-hidden" app>
+		
         <template v-slot:img="{ props }">
           <v-img v-bind="props" gradient="to top right, rgba(19,84,122,.5), rgba(128,208,199,.8)"></v-img>
-        </template>
+		</template>
+		
         <v-toolbar-title class="d-flex align-center mb-n1">
           <v-img src="./img/fence-icon.png" width="40px"></v-img>
-          <strong class="ml-2">fence calc</strong>
+          <strong class="ml-2 d-none d-lg-flex">fence calc</strong>
         </v-toolbar-title>
         
         <v-btn class="ma-2" tile text link :to="{name:'home'}" exact>
-          <v-icon dark class="mr-2">mdi-home</v-icon>
-          Главная
+          <v-icon dark>mdi-home</v-icon>
+          <span class="ml-2 d-none d-md-flex">Главная</span>
         </v-btn>
 
         <v-btn class="ma-2" tile text link :to="{name:'compute'}">
           <v-icon dark class="mr-2">mdi-calculator-variant</v-icon>          
-          Расчитать
+          <span class="ml-2 d-none d-md-flex">Расчитать</span>
         </v-btn>
 
         <v-btn class="ma-2" tile text link :to="{name:'how'}">          
           <v-icon class="mr-2">mdi-head-question-outline</v-icon>
-          Как это работает?
+          <span class="ml-2 d-none d-md-flex">Как это работает?</span>
+		</v-btn>
+		
+		<v-btn class="ma-2" tile text link :to="{name:'gallery'}">          
+          <v-icon class="mr-2">mdi-image-multiple-outline</v-icon>
+          <span class="ml-2 d-none d-md-flex">Галерея пользователей</span>
         </v-btn>
 
         <v-spacer></v-spacer>
 
-        <v-btn icon>
-          <v-icon>mdi-magnify</v-icon>
-        </v-btn>
-
-        <v-btn icon>
+        <v-btn icon class="ml-2 d-none d-md-flex">
           <v-icon>mdi-heart</v-icon>
         </v-btn>
 
-        <v-btn icon>
+        <v-btn icon class="ml-2 d-none d-md-flex">
           <v-icon dark>mdi-information-outline</v-icon>
         </v-btn>
       </v-app-bar>
@@ -123,7 +133,7 @@ new Vue({
 
         <v-main style="min-height: 1000px;" id="content-test">
           <v-container>            
-            <transition name="compute" mode="out-in" appear>
+            <transition mode="out-in" appear>
               <router-view/>
             </transition>
           </v-container>

@@ -34,10 +34,10 @@ export const stepCard1 = Vue.component('stepCard1', {
 				<h4 class="text-center">Укажите глубину промерзания:</h4>
 								
 				<v-radio-group v-model="chosenDepth" :mandatory="false" row>					
-      				<v-radio label="Тип 1" :checked="setDepth(chosenDepth)"  :value="depth[1]"></v-radio>
-					<v-radio label="Тип 2" :checked="setDepth(chosenDepth)"  :value="depth[2]"></v-radio>
-					<v-radio label="Тип 3" :checked="setDepth(chosenDepth)"  :value="depth[3]"></v-radio>
-					<v-radio label="Тип 4" :checked="setDepth(chosenDepth)"  :value="depth[4]"></v-radio>
+      				<v-radio label="Тип 1" :checked="setDepth()"  :value="depth[1]"></v-radio>
+					<v-radio label="Тип 2" :checked="setDepth()"  :value="depth[2]"></v-radio>
+					<v-radio label="Тип 3" :checked="setDepth()"  :value="depth[3]"></v-radio>
+					<v-radio label="Тип 4" :checked="setDepth()"  :value="depth[4]"></v-radio>
 				</v-radio-group>
 				<p>
 					<strong>
@@ -49,19 +49,18 @@ export const stepCard1 = Vue.component('stepCard1', {
 		</v-card>
 	  `,
 	computed: {
-		baseDepth: function() {
+		baseDepth: function () {
 			return bootstrapData.state.currentType.baseDepth
 		}
 	},
 	methods: {
-		setDepth () {
+		setDepth() {
 			bootstrapData.commit({
-				type:'inputDepth',depth: this.chosenDepth})
+				type: 'setDepth', depth: this.chosenDepth
+			})
 		}
 	}
 })
-
-
 
 // CARD 2 //////////////////////////////////////////////////// CARD 2 ///////////////
 export const stepCard2 = Vue.component('stepCard2', {
@@ -72,7 +71,7 @@ export const stepCard2 = Vue.component('stepCard2', {
 	},
 	template: `
 		<v-card class="mb-12" color="lighten-1" height="450">
-			<v-item-group mandatory>
+			<v-item-group mandatory  @change="setBaseType($event)">
 				<v-container>
 					<v-row>
 						<v-col
@@ -89,7 +88,7 @@ export const stepCard2 = Vue.component('stepCard2', {
 											@click="toggle"
 											height="150"																						
 											contain
-											style="cursor: pointer;"
+											style="cursor: pointer;"											
 											>
 											<v-btn x-small fab color="success">
 												<v-icon >
@@ -108,6 +107,13 @@ export const stepCard2 = Vue.component('stepCard2', {
 		basementObj: function () {
 			return bootstrapData.state.basementObj;
 		}
+	},
+	methods: {
+		setBaseType(e) {
+			bootstrapData.commit({
+				type: 'setBaseType', depthType: e
+			})
+		}
 	}
 })
 
@@ -120,7 +126,7 @@ export const stepCard3 = Vue.component('stepCard3', {
 	},
 	template: `
 		<v-card class="mb-12" color="lighten-1" height="450">
-			<v-item-group mandatory>
+			<v-item-group mandatory @change="setPillarsType($event)">
 				<v-container>
 					<v-row>
 						<v-col
@@ -131,7 +137,7 @@ export const stepCard3 = Vue.component('stepCard3', {
 							lg="2"
 						>
 						<h4 style="height: 45px;" class="text-center">{{n.name}}</h4>
-							<v-item v-slot:default="{ active, toggle }">
+							<v-item v-slot:default="{ active, toggle }" :value="n.id" >
 									<v-img 	class="text-right pa-2"											
 											:src="n.img"
 											@click="toggle"
@@ -157,6 +163,13 @@ export const stepCard3 = Vue.component('stepCard3', {
 		pillarsObj: function () {
 			return bootstrapData.state.pillarsObj;
 		}
+	},
+	methods: {
+		setPillarsType(e) {
+			bootstrapData.commit({
+				type: 'setPillarType', pillarType: e
+			})
+		}
 	}
 })
 
@@ -169,7 +182,7 @@ export const stepCard4 = Vue.component('stepCard4', {
 	},
 	template: `
 		<v-card class="mb-12" color="lighten-1" min-height="450">
-			<v-item-group mandatory>
+			<v-item-group mandatory @change="setCoverType($event)">
 				<v-container>
 					<v-row>
 						<v-col
@@ -180,7 +193,7 @@ export const stepCard4 = Vue.component('stepCard4', {
 							lg="2"							
 						>
 						<h4 style="height: 45px;" class="text-center">{{n.name}}</h4>
-							<v-item v-slot:default="{ active, toggle }">
+							<v-item v-slot:default="{ active, toggle }" :value="n.id" >
 									<v-img 	class="text-right pa-2"											
 											:src="n.img"
 											@click="toggle"
@@ -205,8 +218,16 @@ export const stepCard4 = Vue.component('stepCard4', {
 		coverObj: function () {
 			return bootstrapData.state.coverObj;
 		}
+	},
+	methods: {
+		setCoverType(e) {
+			bootstrapData.commit({
+				type: "setCoverType", coverType: e
+			})
+		}
 	}
 })
+
 // CARD 5 ////////////////////////////////////////////////////CARD 5///////////////
 export const stepCard5 = Vue.component('stepCard5', {
 	data() {
@@ -225,19 +246,21 @@ export const stepCard5 = Vue.component('stepCard5', {
 		<v-card color="lighten-1" class="d-flex flex-column align-center mb-12" min-height="450">
 			<h4 class="mb-15" >Определяем высоту</h4>
 
-			<div class="d-flex flex-row align-end mb-10">				
+			<div class="d-flex flex-row align-end mb-10">
+
 				<v-img :src="raptor" contain  max-width="600px" class="m-0"></v-img>
 				
-				<div :style="{height: fenceHeight*50}"
+				<div :style="{height:(fenceHeight < 10) ? fenceHeight*50 : 10*50 }"
 					style="width: 10px; background-color: black;" class="mx-10"></div>
 				
 				<v-img :src="human" contain  max-width="150px"></v-img>
+
 			</div>
 			
 			<div>
 				<h4>Укажите высоту: </h4>
 
-				<v-text-field placeholder="1.8 м"  @input="uploadHeight($event)" :rules="rules"></v-text-field>
+				<v-text-field type="number" placeholder="1.8 м"  @input="uploadHeight($event)" :rules="rules"></v-text-field>
 				
 				<strong>
 					Высота ограждения равна: {{ fenceHeight }} м 
@@ -252,9 +275,9 @@ export const stepCard5 = Vue.component('stepCard5', {
 		}
 	},
 	methods: {
-		uploadHeight (e) {
+		uploadHeight(e) {
 			bootstrapData.commit({
-				type: 'inputHeight', height: e,
+				type: 'setHeight', height: e,
 			})
 		}
 	}

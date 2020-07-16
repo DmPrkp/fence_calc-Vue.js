@@ -1,4 +1,6 @@
 import { stepCard1, stepCard2, stepCard3, stepCard4, stepCard5  } from './steps.js';
+import { tableOfLength } from "./tableOfLength.js";
+
 
 // TYPE ////////////////////////////////////////////////////COMPONENT///////////////
 export const fenceType = Vue.component('fenceType', {
@@ -13,22 +15,11 @@ export const fenceType = Vue.component('fenceType', {
 				"тип колонн",
 				"тип покрытия",
 				"высота",
-            ],
-            headers: [
-                {
-                  text: '№ отрезка',
-                  align: 'start',
-                  sortable: true,
-                  value: 'name',
-                },
-                { text: 'начальная точка', value: 'startPoint' },
-                { text: 'длинна', value: 'lenght' },
-                { text: 'конечная точка', value: 'endPoint' },                
-              ],
-            isActive: false,
+            ],            
+            isActive: true,
 		}
 	},
-	methods: {
+	methods: { 
 		nextStep(n) {
 			if (n === this.steps) {
 				this.e1 = 1
@@ -39,7 +30,7 @@ export const fenceType = Vue.component('fenceType', {
 	},
 	template: `
         <div>
-            <div>                
+            <div v-if="isActive">                
                 <v-stepper v-model="e1">
                     <v-stepper-header>
                         <template v-for="n in steps">
@@ -84,20 +75,16 @@ export const fenceType = Vue.component('fenceType', {
                         <v-stepper-content :step="5">
                             <stepCard5/>
                             <div class="d-flex justify-end">
-                                <v-btn color="success" @click="isActive =  !isActive">К определению длинны ограждения ></v-btn>
+                                <v-btn color="success" @click="isActive = !isActive">К определению длинны ></v-btn>
                             </div>
-                            </v-stepper-content>
+                        </v-stepper-content>
 
                     </v-stepper-items>
                 </v-stepper>
             </div>
-            <template v-if="isActive">
-                <v-data-table
-                    :headers="headers"                    
-                    :items-per-page="10"
-                    hide-default-footer                    
-                ></v-data-table>
-            </template>
+            <div v-else>
+                <tableOfLength/>                    
+            </div>
 		</div>
 	`
 })
