@@ -31,11 +31,7 @@ export const yourFence = Vue.component('yourFence', {
                 <div>Общая длинна: <strong>{{fenceData.overallLength}}</strong> <em>м</em></div>
 
                 <div>Количество солбов: <strong>{{fenceData.pillarsNum}}</strong> <em>шт</em></div>
-            </v-card-text>
-        
-            <v-card-actions>
-                
-            </v-card-actions>
+            </v-card-text>           
         </v-card>
     </div>
     `,

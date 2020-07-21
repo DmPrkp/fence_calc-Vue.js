@@ -15,8 +15,7 @@ export const fenceType = Vue.component('fenceType', {
 				"тип колонн",
 				"тип покрытия",
 				"высота",
-            ],            
-            isActive: true,
+            ],           
 		}
 	},
 	methods: { 
@@ -30,7 +29,7 @@ export const fenceType = Vue.component('fenceType', {
 	},
 	template: `
         <div>
-            <div v-if="isActive">                
+            <div>                
                 <v-stepper v-model="e1">
                     <v-stepper-header>
                         <template v-for="n in steps">
@@ -75,16 +74,13 @@ export const fenceType = Vue.component('fenceType', {
                         <v-stepper-content :step="5">
                             <stepCard5/>
                             <div class="d-flex justify-end">
-                                <v-btn color="success" @click="isActive = !isActive">К определению длинны ></v-btn>
+                                <v-btn small tile color="primary" @click="$emit('active')">К определению длинны ></v-btn>
                             </div>
                         </v-stepper-content>
 
                     </v-stepper-items>
                 </v-stepper>
-            </div>
-            <div v-else>
-                <tableOfLength/>                    
-            </div>
+            </div>           
 		</div>
 	`
 })

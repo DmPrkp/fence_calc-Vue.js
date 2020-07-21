@@ -14,7 +14,7 @@ export const stepCard1 = Vue.component('stepCard1', {
 		}
 	},
 	template: `
-		<v-card color="lighten-1" class="d-flex flex-column align-center mb-12" height="450">
+		<v-card color="lighten-1" class="d-flex flex-column align-center mb-5" height="450">
 			<h3 class="mb-2">Определяем глубину промерзания и залегания фундамента</h3>
 			<v-row>
 				<v-col cols="12" sm="6">
@@ -70,7 +70,7 @@ export const stepCard2 = Vue.component('stepCard2', {
 		}
 	},
 	template: `
-		<v-card class="mb-12" color="lighten-1" height="450">
+		<v-card class="mb-5" color="lighten-1" height="450">
 			<v-item-group mandatory  @change="setBaseType($event)">
 				<v-container>
 					<v-row>
@@ -125,7 +125,7 @@ export const stepCard3 = Vue.component('stepCard3', {
 		}
 	},
 	template: `
-		<v-card class="mb-12" color="lighten-1" height="450">
+		<v-card class="mb-5" color="lighten-1" height="450">
 			<v-item-group mandatory @change="setPillarsType($event)">
 				<v-container>
 					<v-row>
@@ -181,7 +181,7 @@ export const stepCard4 = Vue.component('stepCard4', {
 		}
 	},
 	template: `
-		<v-card class="mb-12" color="lighten-1" min-height="450">
+		<v-card class="mb-5" color="lighten-1" min-height="450">
 			<v-item-group mandatory @change="setCoverType($event)">
 				<v-container>
 					<v-row>
@@ -243,7 +243,7 @@ export const stepCard5 = Vue.component('stepCard5', {
 		}
 	},
 	template: `
-		<v-card color="lighten-1" class="d-flex flex-column align-center mb-12" min-height="450">
+		<v-card color="lighten-1" class="d-flex flex-column align-center mb-5" min-height="450">
 			<h4 class="mb-15" >Определяем высоту</h4>
 
 			<div class="d-flex flex-row align-end mb-10">

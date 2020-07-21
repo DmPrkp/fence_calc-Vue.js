@@ -1,6 +1,8 @@
 import { fenceType } from './fenceType.js'
 import { yourFence } from './yourFence.js'
 import { uploadImg } from './gallery.js'
+import { tableOfLength } from './tableOfLength.js'
+import { Result } from './result.js'
 
 //COMPONENTS//////COMPONENTS//////////COMPONENTS///////////COMPONENTS///////////////
 // MAIN ////////////////////////////////////////////////////COMPONENT///////////////
@@ -10,8 +12,14 @@ const Home = Vue.component('home', {
 })
 
 const Compute = Vue.component('compute', {
+	data() {
+		return {
+			isActive: true,
+			result: false,
+		}		
+	},
 	template: `
-	<div>
+	<div>		
 		<div>
 			<h3 class="text-center mb-10"> Определяем конструкцию ограждения и его длинну </h3>
 			<v-row>
@@ -25,12 +33,15 @@ const Compute = Vue.component('compute', {
 				<v-col 
 					col="12"
 					lg="9">
-					<div>
-						<fenceType/>
-					</div>				
+						<div>
+
+							<fenceType v-on:active="isActive = false" v-if="isActive"/>
+							<tableOfLength v-on:back="isActive = true" v-else/>
+
+						</div>
 				</v-col>
 			</v-row>
-		</div>
+		</div>			
 	</div>	
 	`
 })
@@ -55,6 +66,17 @@ const routes = [
 		path: '/compute',
 		component: Compute,
 		name: 'compute',
+		children: [
+			{
+				path: 'fenceType',
+				component: fenceType,
+				name: 'fenceType',
+			},{
+				path: 'result',
+				component: Result,
+				name: 'result',
+			}
+		]	
 	}, {
 		path: '/how',
 		component: How,
@@ -134,7 +156,7 @@ new Vue({
         <v-main style="min-height: 1000px;" id="content-test">
           <v-container>            
             <transition mode="out-in" appear>
-              <router-view/>
+							<router-view/>							
             </transition>
           </v-container>
         </v-main>

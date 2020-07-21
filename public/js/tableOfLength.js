@@ -233,9 +233,9 @@ export const tableOfLength = Vue.component('tableOfLength', {
 
     <div>
       <v-row>
-        <v-btn small tile color="primary" dark> < Назад</v-btn>
+        <v-btn small tile @click="$emit('back')" color="primary" dark> < Назад</v-btn>
         <v-spacer> </v-spacer>
-        <v-btn small tile color="primary" dark>Выполнить расчет > </v-btn>
+        <v-btn small tile color="primary" link :to="{name:'result'}" dark>Выполнить расчет > </v-btn>
       </v-row>
     </div>
   </div>

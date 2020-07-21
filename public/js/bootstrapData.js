@@ -159,4 +159,4 @@ const bootstrapData = new Vuex.Store({
 			state.currentType.pillarsNum = val
 		}
 	}
-})
+})	
