@@ -1,8 +1,7 @@
-export const Result = Vue.component("result", {
+export const result = Vue.component("result", {
   data () {
     return {
-      expanded: [],
-      singleExpand: false,
+      expanded: [],      
       headers: [
         {
           text: 'Материалы и инструмент',
@@ -13,6 +12,7 @@ export const Result = Vue.component("result", {
         { text: 'характеристики', value: 'char' },
         { text: 'кол-во', value: 'quantity' },
         { text: 'Ед.изм', value: 'unitOfMeasurement' },
+        { text: '', value: 'actions', sortable: false },
       ],
       MandI: [
         {
@@ -39,29 +39,93 @@ export const Result = Vue.component("result", {
       ]      
     }
   },
+  methods: {
+    editItem(item) {
+      this.editedIndex = this.MandI.indexOf(item);
+      this.editedItem = Object.assign({}, item);
+      this.dialog = true;
+    },
+    deleteItem(item) {
+      const index = this.MandI.indexOf(item)
+      this.MandI.splice(index, 1)
+      for (let i = 0; i < this.MandI.length; i++) {
+        this.MandI[i].number = i + 1
+      }
+    },
+    close() {
+      this.dialog = false
+      this.$nextTick(() => {
+        this.editedItem = Object.assign({}, this.defaultItem)
+        this.editedIndex = -1
+      })
+    },
+    save() {
+        if (this.editedIndex > -1) {
+        Object.assign(this.MandI[this.editedIndex], this.editedItem)
+      } else {
+        this.MandI.push(this.editedItem)
+      }
+      this.close()
+    },
+  },
+  watch: {
+    dialog(val) {
+      val || this.close()
+    },
+  },
   template: `
     <div>
-      <v-data-table
-        :headers="headers"
-        :items="MandI"
-        :single-expand="singleExpand"
-        :expanded.sync="expanded"
-        item-key="char"
-        show-expand
-        class="elevation-1"
-        hide-default-footer
-      >
-        <template v-slot:top>
-          <v-toolbar flat>
-            <v-toolbar-title>Expandable Table</v-toolbar-title>
-            <v-spacer></v-spacer>
-            <v-switch v-model="singleExpand" label="Single expand" class="mt-2"></v-switch>
-          </v-toolbar>
-        </template>
-        <template v-slot:expanded-item="{ headers, item }">
-          <td :colspan="headers.length">More info about {{ item.name }}</td>
-        </template>
-      </v-data-table>
+      <h3 class="text-center mb-10"> РЕЗУЛЬТАТ РАСЧЕТА </h3>
+      <div>      
+        <v-data-table
+          :headers="headers"
+          :items="MandI"        
+          :expanded.sync="expanded"
+          item-key="char"
+          show-expand
+          class="elevation-1"
+          hide-default-footer
+        >
+          <template v-slot:top>
+            <v-toolbar flat>
+              <v-toolbar-title>Необходимые материалы и инструменты</v-toolbar-title>                      
+            </v-toolbar>
+          </template>
+          <template v-slot:expanded-item="{ headers, item }">
+            <td :colspan="headers.length">More info about {{ item.name }}</td>
+          </template>
+          <template v-slot:item.actions="{ item }">
+        <v-tooltip bottom>
+          <template v-slot:activator="{ on, attrs }">
+            <v-icon          
+              class="mr-2"
+              @click="editItem(item)"
+              color="primary"
+              v-bind="attrs"
+              v-on="on"
+            >
+              mdi-pencil
+            </v-icon>
+          </template>
+          <span>Редактировать</span>
+        </v-tooltip>
+
+        <v-tooltip bottom>
+          <template v-slot:activator="{ on, attrs }">
+            <v-icon          
+                color="error"
+                @click="deleteItem(item)"
+                v-bind="attrs"
+                v-on="on"
+              >
+            mdi-delete
+            </v-icon>
+          </template>
+          <span>Удалить</span>
+        </v-tooltip>
+      </template>  
+        </v-data-table>
+      </div>
     </div>
   `
 })

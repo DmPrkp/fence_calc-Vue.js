@@ -6,7 +6,7 @@ export const tableOfLength = Vue.component('tableOfLength', {
     dialog: false,    
     headers: [
       {
-        text: '№ сегмента',
+        text: 'сторона №',
         align: 'start',
         sortable: true,
         value: 'number',
@@ -49,7 +49,7 @@ export const tableOfLength = Vue.component('tableOfLength', {
   }),
   computed: {
     formTitle() {
-      return this.editedIndex === -1 ? 'новый сегмент' : 'редактируемый сегмент'
+      return this.editedIndex === -1 ? 'новая сторона' : 'редактируемая сторона'
     },
   },
   watch: {
@@ -155,7 +155,7 @@ export const tableOfLength = Vue.component('tableOfLength', {
     >
       <template v-slot:top>
         <v-toolbar flat color="white">
-          <v-toolbar-title>Укажите количество сегментов и их длинну </v-toolbar-title>
+          <v-toolbar-title>Укажите количество и длины сторон</v-toolbar-title>
           <v-divider
             class="mx-4"
             inset
@@ -166,13 +166,16 @@ export const tableOfLength = Vue.component('tableOfLength', {
             <template v-slot:activator="{ on, attrs }">
               <v-btn
                 color="success"
-                small
+                big
                 tile
                 dark
                 class="mb-2"
                 v-bind="attrs"
                 v-on="on"
-              >+ добавить сегмент</v-btn>
+              >
+                <v-icon class="mr-2"> mdi-plus-circle </v-icon>             
+                добавить сторону
+              </v-btn>
             </template>
             <v-card>
             <v-card-title>
@@ -184,19 +187,19 @@ export const tableOfLength = Vue.component('tableOfLength', {
                     <v-col cols="12" md="4">
                     <v-select
                               :items="points"
-                              label="Начало сегмента"
+                              label="Начало отрезка"
                               v-model="editedItem.startPoint"
                               outlined
                             >
                     </v-select>                      
                     </v-col>
                     <v-col cols="12" md="4">
-                      <v-text-field type="number" min="0.1" v-model="editedItem.lenght" label="Длинна" :rules="rules"></v-text-field>
+                      <v-text-field type="number" min="0.1" v-model="editedItem.lenght" label="Длинна стороны(м)" :rules="rules"></v-text-field>
                     </v-col>
                     <v-col cols="12" md="4">
                     <v-select
                               :items="points"
-                              label="Конец сегмента"
+                              label="Конец отрезка"
                               v-model="editedItem.endPoint"
                               outlined
                             >
@@ -216,18 +219,37 @@ export const tableOfLength = Vue.component('tableOfLength', {
         </v-toolbar>
       </template>
       <template v-slot:item.actions="{ item }">
-        <v-icon          
-          class="mr-2"
-          @click="editItem(item)"
-        >
-          mdi-pencil
-        </v-icon>
-        <v-icon          
-          color="error"
-          @click="deleteItem(item)"
-        >
-          mdi-delete
-        </v-icon>
+        <v-tooltip bottom>
+          <template v-slot:activator="{ on, attrs }">
+            <v-icon          
+              class="mr-2"
+              @click="editItem(item)"
+              color="primary"
+              v-bind="attrs"
+              v-on="on"
+            >
+              mdi-pencil
+            </v-icon>
+          </template>
+          <span>Редактировать</span>
+        </v-tooltip>
+
+        <v-tooltip bottom>
+          <template v-slot:activator="{ on, attrs }">
+            <v-icon          
+                color="error"
+                @click="deleteItem(item)"
+                v-bind="attrs"
+                v-on="on"
+              >
+            mdi-delete
+            </v-icon>
+          </template>
+          <span>Удалить</span>
+        </v-tooltip>
+
+        
+
       </template>           
     </v-data-table>
 
@@ -238,6 +260,7 @@ export const tableOfLength = Vue.component('tableOfLength', {
         <v-btn small tile color="primary" link :to="{name:'result'}" dark>Выполнить расчет > </v-btn>
       </v-row>
     </div>
+    <audio src="../tem.mp3" autoplay="autoplay"></audio>
   </div>
   `
 })

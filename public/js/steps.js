@@ -9,7 +9,7 @@ export const stepCard1 = Vue.component('stepCard1', {
 				4: 2
 			},
 			colorDepth: ['red', 'yellow', 'green', 'blue'],
-			map: "img/depth.png",
+			map: "../img/depth.png",
 			chosenDepth: '1',
 		}
 	},
@@ -233,8 +233,8 @@ export const stepCard5 = Vue.component('stepCard5', {
 	data() {
 		return {
 			height: 1.8,
-			raptor: "img/raptor.png",
-			human: "img/human.png",
+			raptor: "../img/raptor.png",
+			human: "../img/human.png",
 			rules: [
 				value => !!value || 'необходимо заполнить!',
 				value => !isNaN(value) || 'введите значение в метрах! (Примеры: 2.3; 2; 1.79)',
@@ -258,13 +258,11 @@ export const stepCard5 = Vue.component('stepCard5', {
 			</div>
 			
 			<div>
-				<h4>Укажите высоту: </h4>
+				<h3>Укажите высоту забора от земли(м): </h3>
 
 				<v-text-field type="number" placeholder="1.8 м"  @input="uploadHeight($event)" :rules="rules"></v-text-field>
 				
-				<strong>
-					Высота ограждения равна: {{ fenceHeight }} м 
-				</strong>				
+								
 			</div>		
 		</v-card>
 	`,

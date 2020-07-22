@@ -1,8 +1,6 @@
-import { fenceType } from './fenceType.js'
-import { yourFence } from './yourFence.js'
 import { uploadImg } from './gallery.js'
-import { tableOfLength } from './tableOfLength.js'
-import { Result } from './result.js'
+import { result } from './result.js'
+import { compute } from './compute.js'
 
 //COMPONENTS//////COMPONENTS//////////COMPONENTS///////////COMPONENTS///////////////
 // MAIN ////////////////////////////////////////////////////COMPONENT///////////////
@@ -11,37 +9,17 @@ const Home = Vue.component('home', {
 	template: `<p>HOME</p>`
 })
 
-const Compute = Vue.component('compute', {
+const Calculation = Vue.component('calculation', {
 	data() {
 		return {
-			isActive: true,
-			result: false,
+			isActive: true,			
 		}		
 	},
 	template: `
-	<div>		
-		<div>
-			<h3 class="text-center mb-10"> Определяем конструкцию ограждения и его длинну </h3>
-			<v-row>
-				<v-col
-					col="12"
-					lg="3">
-				
-					<yourFence/>
-
-				</v-col>
-				<v-col 
-					col="12"
-					lg="9">
-						<div>
-
-							<fenceType v-on:active="isActive = false" v-if="isActive"/>
-							<tableOfLength v-on:back="isActive = true" v-else/>
-
-						</div>
-				</v-col>
-			</v-row>
-		</div>			
+	<div>
+		<router-view></router-view>	
+		<router-view name="compute"></router-view>	
+		<router-view name="result"></router-view>		
 	</div>	
 	`
 })
@@ -63,17 +41,17 @@ const routes = [
 		component: Home,
 		name: 'home',
 	}, {
-		path: '/compute',
-		component: Compute,
-		name: 'compute',
+		path: '/calculation',
+		component: Calculation,
+		name: 'calculation',
 		children: [
 			{
-				path: 'fenceType',
-				component: fenceType,
-				name: 'fenceType',
+				path: 'compute',
+				component: compute,
+				name: 'compute',
 			},{
 				path: 'result',
-				component: Result,
+				component: result,
 				name: 'result',
 			}
 		]	
@@ -108,7 +86,7 @@ new Vue({
 	},
 	template: `
 	<v-app id="inspire">
-      <v-app-bar color="#fcb69f" fixed dark shrink-on-scroll src="./img/fence-road.jpg"
+      <v-app-bar color="#fcb69f" fixed dark shrink-on-scroll src="../img/fence-road.jpg"
 		scroll-target="#scrolling-techniques-2" class="overflow-hidden" app>
 		
         <template v-slot:img="{ props }">
@@ -116,7 +94,7 @@ new Vue({
 		</template>
 		
         <v-toolbar-title class="d-flex align-center mb-n1">
-          <v-img src="./img/fence-icon.png" width="40px"></v-img>
+          <v-img src="../img/fence-icon.png" width="40px"></v-img>
           <strong class="ml-2 d-none d-lg-flex">fence calc</strong>
         </v-toolbar-title>
         
@@ -155,8 +133,10 @@ new Vue({
 
         <v-main style="min-height: 1000px;" id="content-test">
           <v-container>            
-            <transition mode="out-in" appear>
-							<router-view/>							
+						<transition mode="out-in" appear>
+						
+							<router-view/>
+
             </transition>
           </v-container>
         </v-main>

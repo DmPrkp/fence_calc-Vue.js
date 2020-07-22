@@ -16,7 +16,7 @@ const bootstrapData = new Vuex.Store({
 		basementObj: [
 			{
 				id: 1.1,
-				img: "img/basement/RFL.png",
+				img: "../img/basement/RFL.png",
 				name: "Железобетонный ленточный фундамент",
 				plus: ["Несущая способность", "долговечность"],
 				minus: ["Стоймость"],
@@ -24,7 +24,7 @@ const bootstrapData = new Vuex.Store({
 			},
 			{
 				id: 1.2,
-				img: "img/basement/RF.png",
+				img: "../img/basement/RF.png",
 				name: "Железобетонный фундамент",
 				plus: ["Долговечность"],
 				minus: ["Cущественных нет"],
@@ -32,7 +32,7 @@ const bootstrapData = new Vuex.Store({
 			},
 			{
 				id: 1.3,
-				img: "img/basement/Pillar.png",
+				img: "../img/basement/Pillar.png",
 				name: `Колонны в грунте
 				(по типу свай)`,
 				plus: ["Стоимость"],
@@ -43,7 +43,7 @@ const bootstrapData = new Vuex.Store({
 		pillarsObj: [
 			{
 				id: 2.1,
-				img: "img/pillars/BP.png",
+				img: "../img/pillars/BP.png",
 				name: "Армированная кладка",
 				plus: ["Несущая способность", "долговечность"],
 				minus: ["Стоймость"],
@@ -51,7 +51,7 @@ const bootstrapData = new Vuex.Store({
 			},
 			{
 				id: 2.2,
-				img: "img/pillars/MP.png",
+				img: "../img/pillars/MP.png",
 				name: "Металлопрокат",
 				plus: ["Долговечность"],
 				minus: ["Cущественных нет"],
@@ -59,7 +59,7 @@ const bootstrapData = new Vuex.Store({
 			},
 			{
 				id: 2.3,
-				img: "img/pillars/WP.png",
+				img: "../img/pillars/WP.png",
 				name: "Пиломатериалы",
 				plus: ["Стоимость"],
 				minus: ["Недолговечность (10-20 лет)"],
@@ -70,7 +70,7 @@ const bootstrapData = new Vuex.Store({
 		coverObj: [
 			{
 				id: 3.1,
-				img: "img/cover/Brick.jpg",
+				img: "../img/cover/Brick.jpg",
 				name: "Кирпич",
 				plus: ["Несущая способность", "долговечность"],
 				minus: ["Стоймость"],
@@ -78,7 +78,7 @@ const bootstrapData = new Vuex.Store({
 			},
 			{
 				id: 3.2,
-				img: "img/cover/Proflist.jpg",
+				img: "../img/cover/Proflist.jpg",
 				name: "Профлист",
 				plus: ["Долговечность"],
 				minus: ["Cущественных нет"],
@@ -86,7 +86,7 @@ const bootstrapData = new Vuex.Store({
 			},
 			{
 				id: 3.3,
-				img: "img/cover/wood.jpg",
+				img: "../img/cover/wood.jpg",
 				name: "Доска",
 				plus: ["Стоимость"],
 				minus: [`Недолговечность (10-20 лет)`],
@@ -94,7 +94,7 @@ const bootstrapData = new Vuex.Store({
 			},
 			{
 				id: 3.4,
-				img: "img/cover/SetkaR.jpg",
+				img: "../img/cover/SetkaR.jpg",
 				name: "Сетка рабица",
 				plus: ["Стоимость"],
 				minus: ["Недолговечность(10-20 лет)"],
@@ -102,7 +102,7 @@ const bootstrapData = new Vuex.Store({
 			},
 			{
 				id: 3.5,
-				img: "img/cover/Shtaket.jpg",
+				img: "../img/cover/Shtaket.jpg",
 				name: "Штакет",
 				plus: ["Стоимость"],
 				minus: ["Недолговечность(10-20 лет)"],
@@ -110,7 +110,7 @@ const bootstrapData = new Vuex.Store({
 			},
 			{
 				id: 3.6,
-				img: "img/cover/Gitter.jpg",
+				img: "../img/cover/Gitter.jpg",
 				name: "ЗD сетка",
 				plus: ["Стоимость"],
 				minus: ["Недолговечность(10-20 лет)"],

@@ -74,7 +74,7 @@ export const fenceType = Vue.component('fenceType', {
                         <v-stepper-content :step="5">
                             <stepCard5/>
                             <div class="d-flex justify-end">
-                                <v-btn small tile color="primary" @click="$emit('active')">К определению длинны ></v-btn>
+                                <v-btn tile color="primary" @click="$emit('active')">К определению длинны  <v-icon dark class="ml-3">mdi-redo</v-icon></v-btn>
                             </div>
                         </v-stepper-content>
 
